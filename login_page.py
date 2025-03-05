@@ -48,3 +48,24 @@ if auth_code:
     st.session_state["token"] = token_response
     st.success("Login realizado com sucesso!")
     st.rerun()
+
+
+# Se o usuário já estiver autenticado, exibe os dados
+if "token" in st.session_state:
+    st.success("Login realizado com sucesso!")
+
+    # Requisição para obter os dados do usuário
+    oauth = OAuth2Session(CLIENT_ID, CLIENT_SECRET, token=st.session_state["token"])
+    user_info = oauth.get(USERINFO_URL).json()
+
+    # Exibe informações do usuário
+    st.image(user_info["picture"], width=100)
+    st.write(f"**Nome:** {user_info['name']}")
+    st.write(f"**Email:** {user_info['email']}")
+
+    #                                               >>>>Função para banco de dados aqui <<<<<
+
+    # Botão de logout
+    if st.button("Logout"):
+        del st.session_state["token"]
+        st.rerun()
