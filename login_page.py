@@ -27,10 +27,8 @@ if st.button("Login com Google"):
         st.write(f"[Clique aqui para fazer login]({auth_url})") 
 
 
-
-
-
-
+query_params = st.query_params
+auth_code = query_params.get("code", None)
 
 if auth_code:
     st.info("Autenticando...")
