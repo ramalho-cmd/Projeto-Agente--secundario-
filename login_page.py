@@ -25,3 +25,28 @@ if st.button("Login com Google"):
 
         # Redireciona o usuário para a URL de login do Google
         st.write(f"[Clique aqui para fazer login]({auth_url})") 
+
+
+
+
+
+
+
+if auth_code:
+    st.info("Autenticando...")
+
+    # Solicitação para trocar código pelo token de acesso
+    oauth = OAuth2Session(CLIENT_ID, redirect_uri=REDIRECT_URI, scope=SCOPES)
+    token_response = oauth.fetch_token(
+        TOKEN_URL,
+        authorization_response=f"{REDIRECT_URI}?code={auth_code}",
+        client_secret=CLIENT_SECRET,
+        include_client_id=True,
+        auth=None
+    )
+    st.query_params.clear()
+
+    # Salva o token na sessão
+    st.session_state["token"] = token_response
+    st.success("Login realizado com sucesso!")
+    st.rerun()
