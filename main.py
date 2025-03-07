@@ -45,7 +45,9 @@ def google_login():
         st.image(user_info["picture"], width=100)
         st.write(f"**Nome:** {user_info['name']}")
         st.write(f"**Email:** {user_info['email']}")
-
+        if st.button("Continuar"):
+            st.rerun()  
+            
         if st.button("Logout"):
             del st.session_state["token"]
             del st.session_state["user_email"]
