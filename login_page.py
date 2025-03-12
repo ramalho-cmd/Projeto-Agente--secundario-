@@ -1,4 +1,4 @@
-import streamlit as st
+'''import streamlit as st
 from authlib.integrations.requests_client import OAuth2Session
 import os
 from dotenv import load_dotenv
@@ -71,4 +71,4 @@ if "token" in st.session_state:
     # Botão de logout
     if st.button("Logout"):
         del st.session_state["token"]
-        st.rerun()
+        st.rerun()'''
