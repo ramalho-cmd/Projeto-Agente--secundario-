@@ -1,0 +1,38 @@
+from app.database.average_price import get_average_prices
+from app.database.config import get_connection
+
+# Função para calcular a média de preço de um veículo
+def media_unitaria(id_veiculo):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+            SELECT AVG(preco) from prices where veiculo_id=%s;""",(id_veiculo))
+    avg_price = cur.fetchall()
+    conn.commit()
+    cur.close()
+    conn.close()
+    return avg_price
+
+# Obtem a lista de veículos com suas médias de preço atuais
+itens  = get_average_prices()
+
+# Percorre cada item da lista par atualizar os valores das medias
+def atualizar_media(itens):
+    for item in itens:
+        id_veiculo = item[1]
+        conn = get_connection()
+        cur = conn.cursor()
+        try:
+            avg_price = media_unitaria(id_veiculo)
+            cur.execute("""
+                        UPDATE average_price SET average_price=%s WHERE veiculo_id=%s;   
+                """, (avg_price, id_veiculo))
+        
+            conn.commit()
+            cur.close()
+            conn.close()
+
+            return print(f"Media de preço atualizada para o veiculo {id_veiculo}")
+
+        except Exception as e:
+            return print(f"Erro ao atualizar a media de preço para o veiculo {id_veiculo} - {e}")
